@@ -113,18 +113,27 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 
-.hero__bg {
+/* full-bleed cinematic in-game store video */
+.hero__video {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(10,7,16,0.55) 0%, rgba(10,7,16,0.78) 55%, var(--bg) 100%),
-    radial-gradient(circle at 70% 30%, rgba(123,47,190,0.30), transparent 55%),
-    radial-gradient(circle at 20% 80%, rgba(194,41,154,0.22), transparent 50%),
-    url('https://images.unsplash.com/photo-1545179605-1296651e9d0c?auto=format&fit=crop&w=2000&q=80');
-  background-size: cover;
-  background-position: center;
-  filter: saturate(1.05) contrast(1.05);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   z-index: 0;
+  filter: saturate(1.05) contrast(1.03);
+}
+
+/* dark + neon wash layered over the footage */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(10,7,16,0.45) 0%, rgba(10,7,16,0.72) 55%, var(--bg) 100%),
+    radial-gradient(circle at 70% 30%, rgba(123,47,190,0.32), transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(194,41,154,0.24), transparent 50%);
 }
 
 /* faint grid overlay for the editorial feel */
