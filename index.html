@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LTD Grove Street — La rue. Le prestige.</title>
+  <meta name="description" content="LTD Grove Street — l'épicerie premium de Grove Street, Los Santos. Là où la culture de la rue rencontre le prestige." />
+
+  <!-- Fonts: Anton (display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <a class="nav__brand" href="#top">
+      <span class="nav__mark">LTD</span>
+      <span class="nav__sub">GROVE&nbsp;STREET</span>
+    </a>
+    <nav class="nav__links">
+      <a href="#produits">Boutique</a>
+      <a href="#about">L'histoire</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#produits" class="nav__cta">Entrer</a>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="hero__bg" role="img" aria-label="Devanture nocturne du magasin LTD Grove Street à Los Santos"></div>
+    <div class="hero__grid"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Grove Street · Los Santos · 24/7</p>
+      <h1 class="hero__title">La rue.<br /><span class="hero__title--accent">Le prestige.</span></h1>
+      <p class="hero__lede">
+        L'épicerie de quartier réinventée. Là où le bitume rencontre le luxe —
+        une sélection premium, servie sous les néons.
+      </p>
+      <div class="hero__actions">
+        <a href="#produits" class="btn btn--glow">Découvrir la boutique</a>
+        <a href="#about" class="btn btn--ghost">Notre univers</a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <span>Défiler</span>
+      <i class="hero__scroll-line"></i>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>OUVERT 24/7</span><i>✦</i>
+      <span>GROVE STREET</span><i>✦</i>
+      <span>PREMIUM GOODS</span><i>✦</i>
+      <span>LOS SANTOS</span><i>✦</i>
+      <span>OUVERT 24/7</span><i>✦</i>
+      <span>GROVE STREET</span><i>✦</i>
+      <span>PREMIUM GOODS</span><i>✦</i>
+      <span>LOS SANTOS</span><i>✦</i>
+    </div>
+  </div>
+
+  <!-- ============ PRODUITS ============ -->
+  <section class="products" id="produits">
+    <div class="section-head">
+      <div>
+        <p class="section-head__kicker">01 — La sélection</p>
+        <h2 class="section-head__title">Pièces<br />signatures</h2>
+      </div>
+      <p class="section-head__note">
+        Trois essentiels. Triés sur le volet, servis avec style.
+        Le strict nécessaire — sans rien de superflu.
+      </p>
+    </div>
+
+    <div class="cards">
+      <!-- Card 1 : Boisson -->
+      <article class="card">
+        <div class="card__media card__media--1">
+          <span class="card__tag">Boisson</span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Néon Cola</h3>
+          <p class="card__desc">Soda artisanal glacé, édition violette. La gorgée qui réveille la nuit.</p>
+          <div class="card__foot">
+            <span class="price">$4</span>
+            <span class="card__more">Voir →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 : Snack premium -->
+      <article class="card">
+        <div class="card__media card__media--2">
+          <span class="card__tag">Snack premium</span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Chrome Chips</h3>
+          <p class="card__desc">Chips truffe & sel fumé, sachet métallisé. Le luxe se croque.</p>
+          <div class="card__foot">
+            <span class="price">$9</span>
+            <span class="card__more">Voir →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 : Kit de survie -->
+      <article class="card">
+        <div class="card__media card__media--3">
+          <span class="card__tag">Kit de survie</span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__name">Street Survival Kit</h3>
+          <p class="card__desc">Pansements, eau, énergie, lampe. Tout pour tenir jusqu'à l'aube.</p>
+          <div class="card__foot">
+            <span class="price">$45</span>
+            <span class="card__more">Voir →</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="about__inner">
+      <div class="about__accent" aria-hidden="true"></div>
+      <div class="about__content">
+        <p class="section-head__kicker">02 — L'histoire</p>
+        <h2 class="about__title">La culture de la rue,<br />servie comme un prestige.</h2>
+        <div class="chrome-divider" aria-hidden="true"></div>
+        <p class="about__text">
+          Né sous les lampadaires de Grove Street, LTD n'est pas une simple épicerie.
+          C'est un point de ralliement. Un endroit où le quartier passe prendre
+          son café à 3h du matin et repart avec quelque chose de plus rare —
+          le sentiment d'appartenir.
+        </p>
+        <p class="about__text">
+          On a pris les codes du streetwear de luxe et on les a posés sur des étagères
+          de néons. Chaque produit est choisi, chaque détail compte. La rue mérite
+          mieux. La rue mérite le prestige.
+        </p>
+        <div class="about__stats">
+          <div class="stat"><span class="stat__num">24/7</span><span class="stat__label">Ouvert</span></div>
+          <div class="stat"><span class="stat__num">100%</span><span class="stat__label">Local</span></div>
+          <div class="stat"><span class="stat__num">∞</span><span class="stat__label">Ambiance</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="contact">
+    <div class="footer__grid">
+      <div class="footer__col footer__col--brand">
+        <span class="footer__logo">LTD</span>
+        <p class="footer__tag">La rue. Le prestige.</p>
+        <p class="footer__copy">Épicerie premium · RP FiveM</p>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__head">Localisation</h4>
+        <p>Grove Street</p>
+        <p>Los Santos, San Andreas</p>
+        <p class="footer__muted">Sous les néons, à l'angle du bloc.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__head">Horaires</h4>
+        <p>Lun — Dim</p>
+        <p class="footer__highlight">Ouvert 24h/24</p>
+        <p class="footer__muted">Les néons ne s'éteignent jamais.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__head">Contact</h4>
+        <a class="footer__link" href="#">Discord</a>
+        <a class="footer__link" href="#">Serveur FiveM</a>
+        <a class="footer__link" href="#">@ltd.grovestreet</a>
+      </div>
+    </div>
+
+    <div class="footer__bar">
+      <span>© 2026 LTD Grove Street. Tous droits réservés.</span>
+      <span>Los Santos · San Andreas</span>
+    </div>
+  </footer>
+
+</body>
+</html>
