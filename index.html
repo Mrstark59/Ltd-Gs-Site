@@ -38,6 +38,7 @@
       <source src="assets/hero.mp4" type="video/mp4" />
     </video>
     <div class="hero__overlay"></div>
+    <div class="hero__pulse" aria-hidden="true"></div>
     <div class="hero__grid"></div>
     <div class="hero__content">
       <p class="hero__eyebrow">Grove Street · Los Santos · 24/7</p>
@@ -72,7 +73,7 @@
   </div>
 
   <!-- ============ PROMO STRIP ============ -->
-  <a class="promo-strip" href="catalogue.html#promo">
+  <a class="promo-strip" href="catalogue.html#promo" data-reveal>
     <span class="promo-strip__tag">★ Promo de la semaine</span>
     <span class="promo-strip__text">Jusqu'à <strong>−25 %</strong> sur une sélection — cette semaine seulement, sous les néons.</span>
     <span class="promo-strip__cta">Voir les promos →</span>
@@ -80,7 +81,7 @@
 
   <!-- ============ PRODUITS ============ -->
   <section class="products" id="produits">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <div>
         <p class="section-head__kicker">01 — La sélection</p>
         <h2 class="section-head__title">Pièces<br />signatures</h2>
@@ -93,7 +94,7 @@
 
     <div class="cards">
       <!-- Card 1 : Boisson -->
-      <a class="card" href="catalogue.html">
+      <a class="card" href="catalogue.html" data-reveal>
         <div class="card__media card__media--1">
           <span class="card__tag">Boisson</span>
         </div>
@@ -108,7 +109,7 @@
       </a>
 
       <!-- Card 2 : Snack premium -->
-      <a class="card" href="catalogue.html">
+      <a class="card" href="catalogue.html" data-reveal>
         <div class="card__media card__media--2">
           <span class="card__tag">Snack premium</span>
         </div>
@@ -123,7 +124,7 @@
       </a>
 
       <!-- Card 3 : Kit -->
-      <a class="card" href="catalogue.html">
+      <a class="card" href="catalogue.html" data-reveal>
         <div class="card__media card__media--3">
           <span class="card__tag">Kit de nettoyage</span>
         </div>
@@ -138,7 +139,7 @@
       </a>
     </div>
 
-    <div class="products__cta">
+    <div class="products__cta" data-reveal>
       <a href="catalogue.html" class="btn btn--glow">Voir tout le catalogue →</a>
     </div>
   </section>
@@ -147,7 +148,7 @@
   <section class="about" id="about">
     <div class="about__inner">
       <div class="about__accent" aria-hidden="true"></div>
-      <div class="about__content">
+      <div class="about__content" data-reveal>
         <p class="section-head__kicker">02 — L'histoire</p>
         <h2 class="about__title">La culture de la rue,<br />servie comme un prestige.</h2>
         <div class="chrome-divider" aria-hidden="true"></div>
@@ -174,27 +175,27 @@
   <!-- ============ FOOTER ============ -->
   <footer class="footer" id="contact">
     <div class="footer__grid">
-      <div class="footer__col footer__col--brand">
+      <div class="footer__col footer__col--brand" data-reveal>
         <span class="footer__logo">LTD</span>
         <p class="footer__tag">La rue. Le prestige.</p>
         <p class="footer__copy">Épicerie premium · RP FiveM</p>
       </div>
 
-      <div class="footer__col">
+      <div class="footer__col" data-reveal>
         <h4 class="footer__head">Localisation</h4>
         <p>Grove Street</p>
         <p>Los Santos, San Andreas</p>
         <p class="footer__muted">Sous les néons, à l'angle du bloc.</p>
       </div>
 
-      <div class="footer__col">
+      <div class="footer__col" data-reveal>
         <h4 class="footer__head">Horaires</h4>
         <p>Lun — Dim</p>
         <p class="footer__highlight">Ouvert 24h/24</p>
         <p class="footer__muted">Les néons ne s'éteignent jamais.</p>
       </div>
 
-      <div class="footer__col">
+      <div class="footer__col" data-reveal>
         <h4 class="footer__head">Contact</h4>
         <a class="footer__link" href="#">Discord</a>
         <a class="footer__link" href="#">Serveur FiveM</a>
@@ -207,6 +208,53 @@
       <span>Los Santos · San Andreas</span>
     </div>
   </footer>
+
+  <script>
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reveals = document.querySelectorAll('[data-reveal]');
+
+    if (reduce) {
+      reveals.forEach(el => el.classList.add('in'));
+      return;
+    }
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(el => io.observe(el));
+
+    // Magnetic glow buttons
+    document.querySelectorAll('.btn--glow').forEach(btn => {
+      btn.addEventListener('pointermove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
+        const y = ((e.clientY - r.top) / r.height - 0.5) * 12;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+    });
+
+    // 3D tilt on product cards
+    document.querySelectorAll('.products .card').forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transition = 'transform .06s linear';
+        card.style.transform =
+          `perspective(800px) rotateX(${(-py * 7).toFixed(2)}deg) rotateY(${(px * 7).toFixed(2)}deg) translateY(-6px)`;
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.transition = '';
+        card.style.transform = '';
+      });
+    });
+  })();
+  </script>
 
 </body>
 </html>
