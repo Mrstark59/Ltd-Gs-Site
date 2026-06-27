@@ -884,6 +884,26 @@ function closeProduct() {
     if (bg) bg.style.setProperty('--bx','0px');
   });
 })();
+
+// 3D tilt on every catalogue card (follows the cursor)
+(function setupCardTilt() {
+  const main = document.getElementById('main');
+  if (!main || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let cur = null;
+  const reset = c => { c.style.transition = ''; c.style.transform = ''; };
+  main.addEventListener('pointermove', e => {
+    const card = e.target.closest('.card');
+    if (card !== cur) { if (cur) reset(cur); cur = card; }
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transition = 'transform .08s linear';
+    card.style.transform =
+      `perspective(700px) rotateX(${(-py * 8).toFixed(1)}deg) rotateY(${(px * 9).toFixed(1)}deg) translateY(-4px)`;
+  });
+  main.addEventListener('pointerleave', () => { if (cur) { reset(cur); cur = null; } });
+})();
 // ──────────────────────────────────────────────────────────────────
 
 // ── CART ───────────────────────────────────────────────────────────
