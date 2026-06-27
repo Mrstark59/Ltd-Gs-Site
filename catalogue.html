@@ -279,10 +279,21 @@
   .prod-close { position: absolute; top: 12px; right: 12px; z-index: 4; width: 34px; height: 34px; border-radius: 50%; background: rgba(10,7,16,.6); border: 1px solid var(--border2); color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color .15s, background .15s; }
   .prod-close:hover { color: var(--v); background: var(--vglow); }
 
-  .prod-media { position: relative; background: radial-gradient(circle at 50% 40%, var(--bg4), var(--bg2)); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: zoom-in; min-height: 320px; }
-  .prod-media img { width: 100%; height: 100%; object-fit: contain; padding: 30px; animation: kenburns 13s ease-in-out infinite alternate; }
-  @keyframes kenburns { 0% { transform: scale(1) translateY(0); } 100% { transform: scale(1.09) translateY(-6px); } }
-  .prod-media::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 120%, rgba(194,41,154,.18), transparent 60%); pointer-events: none; }
+  .prod-media { position: relative; background: radial-gradient(circle at 50% 40%, var(--bg4), var(--bg2)); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: zoom-in; min-height: 340px; }
+  .prod-media::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 120%, rgba(194,41,154,.18), transparent 60%); pointer-events: none; z-index: 3; }
+
+  /* scrolling background word */
+  .prod-bgtext { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%) translateX(var(--bx, 0)); display: flex; overflow: hidden; pointer-events: none; z-index: 1; transition: transform .3s ease-out; }
+  .prod-bgtext__row { white-space: nowrap; font-family: var(--font-d); font-size: clamp(90px, 22vh, 230px); line-height: 1; letter-spacing: 4px; text-transform: uppercase; color: rgba(244,241,248,0.05); animation: prodMarquee 22s linear infinite; will-change: transform; }
+  @keyframes prodMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* floating product (mouse parallax wrapper + idle float) */
+  .prod-float { position: relative; z-index: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    transform: perspective(900px) translate3d(var(--mx,0), var(--my,0), 0) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    transition: transform .3s ease-out; transform-style: preserve-3d; }
+  .prod-float img { width: 78%; height: 78%; object-fit: contain; animation: prodFloat 5s ease-in-out infinite;
+    filter: drop-shadow(0 24px 34px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(194,41,154,.20)); }
+  @keyframes prodFloat { 0% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-16px) rotate(3deg); } 100% { transform: translateY(0) rotate(-3deg); } }
   .prod-shine { position: absolute; top: 0; left: 0; width: 60%; height: 100%; pointer-events: none;
     background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.12) 50%, transparent 70%);
     transform: translateX(-160%) skewX(-12deg); animation: prodShine 5.5s ease-in-out infinite; }
@@ -305,7 +316,10 @@
   .prod-qty { display: flex; align-items: center; gap: 8px; background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 5px 8px; }
   .prod-add { flex: 1; font-family: var(--font-m); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: #fff; border: none; cursor: pointer; padding: 14px 18px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--vd), var(--v)); box-shadow: 0 0 18px rgba(194,41,154,.35); transition: transform .15s, box-shadow .15s; }
   .prod-add:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(194,41,154,.6); }
-  @media (prefers-reduced-motion: reduce) { .prod-media img, .prod-shine { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .prod-bgtext__row, .prod-float img, .prod-shine { animation: none; }
+    .prod-float { transform: none; }
+  }
 
   /* ── LOGO BREATHING GLOW ── */
   .logo-text h1 { text-shadow: 0 0 10px rgba(194,41,154,0.22); }
@@ -344,8 +358,9 @@
     .toast { right: 14px; bottom: 84px; left: 14px; max-width: none; }
     .cart-panel { max-height: 85vh; }
     .prod-modal { grid-template-columns: 1fr; width: calc(100vw - 24px); max-height: 90vh; }
-    .prod-media { min-height: 200px; max-height: 38vh; }
-    .prod-media img { padding: 20px; }
+    .prod-media { min-height: 220px; max-height: 40vh; }
+    .prod-float img { width: 66%; height: 66%; }
+    .prod-bgtext__row { font-size: clamp(70px, 14vh, 130px); }
     .prod-info { padding: 20px 18px 22px; gap: 12px; }
     .prod-name { font-size: 30px; }
     .prod-now { font-size: 32px; }
@@ -797,9 +812,13 @@ function openProduct(name) {
   document.getElementById('prodModal').innerHTML = `
     <button class="prod-close" onclick="closeProduct()" aria-label="Fermer">✕</button>
     <div class="prod-media" onclick="${p.img ? `openLightbox('${si}',event)` : ''}">
-      ${p.img
-        ? `<img src="${p.img}" alt="${p.name}"><span class="prod-shine"></span>`
-        : `<div class="no-photo"><span>Photo à venir</span></div>`}
+      <div class="prod-bgtext" aria-hidden="true"><div class="prod-bgtext__row">${(p.name + '  •  ').repeat(12)}</div></div>
+      <div class="prod-float">
+        ${p.img
+          ? `<img src="${p.img}" alt="${p.name}">`
+          : `<div class="no-photo"><span>Photo à venir</span></div>`}
+      </div>
+      <span class="prod-shine"></span>
       ${promo ? `<span class="prod-media-badge">Promo −${promoPct(promo)}%</span>` : ''}
     </div>
     <div class="prod-info">
@@ -839,6 +858,32 @@ function closeProduct() {
   document.getElementById('prodOverlay').classList.remove('show');
   document.getElementById('prodModal').classList.remove('show');
 }
+
+// mouse parallax: product floats and reacts to the cursor
+(function setupProdParallax() {
+  const modal = document.getElementById('prodModal');
+  if (!modal || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  modal.addEventListener('pointermove', e => {
+    const media = modal.querySelector('.prod-media');
+    const float = modal.querySelector('.prod-float');
+    const bg = modal.querySelector('.prod-bgtext');
+    if (!media || !float) return;
+    const r = media.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    float.style.setProperty('--mx', (px * 26).toFixed(1) + 'px');
+    float.style.setProperty('--my', (py * 26).toFixed(1) + 'px');
+    float.style.setProperty('--rx', (-py * 12).toFixed(1) + 'deg');
+    float.style.setProperty('--ry', (px * 14).toFixed(1) + 'deg');
+    if (bg) bg.style.setProperty('--bx', (px * -26).toFixed(1) + 'px');
+  });
+  modal.addEventListener('pointerleave', () => {
+    const float = modal.querySelector('.prod-float');
+    const bg = modal.querySelector('.prod-bgtext');
+    if (float) { float.style.setProperty('--mx','0px'); float.style.setProperty('--my','0px'); float.style.setProperty('--rx','0deg'); float.style.setProperty('--ry','0deg'); }
+    if (bg) bg.style.setProperty('--bx','0px');
+  });
+})();
 // ──────────────────────────────────────────────────────────────────
 
 // ── CART ───────────────────────────────────────────────────────────
