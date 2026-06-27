@@ -809,9 +809,7 @@ function openProduct(name) {
       <p class="prod-desc">${tl}</p>
       <div class="prod-specs">
         <div class="prod-spec"><span class="prod-spec-k">Disponibilité</span><span class="prod-spec-v">${stL}</span></div>
-        <div class="prod-spec"><span class="prod-spec-k">Fournisseur</span><span class="prod-spec-v">${p.src||'—'}</span></div>
         <div class="prod-spec"><span class="prod-spec-k">Catégorie</span><span class="prod-spec-v">${p.cat}</span></div>
-        <div class="prod-spec"><span class="prod-spec-k">Référence</span><span class="prod-spec-v">GS-${p.name.slice(0,3).toUpperCase()}-${String(Math.abs([...p.name].reduce((a,c)=>a+c.charCodeAt(0),0))).slice(-3)}</span></div>
       </div>
       <div class="prod-actions">
         <div class="prod-qty">
