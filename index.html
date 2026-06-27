@@ -15,6 +15,10 @@
 </head>
 <body>
 
+  <div class="fx-leaks" aria-hidden="true"></div>
+  <div class="fx-grain" aria-hidden="true"></div>
+  <div class="page-wipe" id="pageWipe" aria-hidden="true"></div>
+
   <!-- ============ NAV ============ -->
   <header class="nav">
     <a class="nav__brand" href="#top">
@@ -42,7 +46,10 @@
     <div class="hero__grid"></div>
     <div class="hero__content">
       <p class="hero__eyebrow">Grove Street · Los Santos · 24/7</p>
-      <h1 class="hero__title">La rue.<br /><span class="hero__title--accent">Le prestige.</span></h1>
+      <h1 class="hero__title">
+        <span class="reveal-line"><span class="reveal-inner">La rue.</span></span>
+        <span class="reveal-line"><span class="reveal-inner hero__title--accent">Le prestige.</span></span>
+      </h1>
       <p class="hero__lede">
         L'épicerie de quartier réinventée. Là où le bitume rencontre le luxe —
         une sélection premium, servie sous les néons.
@@ -251,6 +258,42 @@
       card.addEventListener('pointerleave', () => {
         card.style.transition = '';
         card.style.transform = '';
+      });
+    });
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const wipe = document.getElementById('pageWipe');
+    if (!wipe) return;
+
+    // enter reveal (skip if a splash screen owns the intro)
+    if (!reduce && !document.getElementById('splash')) {
+      wipe.style.transition = 'none';
+      wipe.style.transform = 'translateY(0)';
+      requestAnimationFrame(() => {
+        wipe.style.transition = 'transform .65s cubic-bezier(.7,0,.3,1)';
+        wipe.style.transform = 'translateY(-100%)';
+      });
+    }
+
+    // exit wipe on internal page links
+    const isInternal = href => /(^|\/)(catalogue|index)\.html(#.*)?$/.test(href || '');
+    document.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute('href');
+      if (!isInternal(href)) return;
+      a.addEventListener('click', e => {
+        if (reduce || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+        e.preventDefault();
+        wipe.style.transition = 'none';
+        wipe.style.transform = 'translateY(100%)';
+        requestAnimationFrame(() => {
+          wipe.style.transition = 'transform .5s cubic-bezier(.7,0,.3,1)';
+          wipe.style.transform = 'translateY(0)';
+        });
+        setTimeout(() => { window.location.href = href; }, 510);
       });
     });
   })();

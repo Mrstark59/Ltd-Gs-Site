@@ -321,6 +321,21 @@
     .prod-float { transform: none; }
   }
 
+  /* ── CINEMATIC FX ── */
+  .fx-grain { position: fixed; inset: -50%; width: 200%; height: 200%; z-index: 9996; pointer-events: none; opacity: .05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: fxGrain .8s steps(1) infinite; }
+  @keyframes fxGrain {
+    0% { transform: translate(0,0); } 10% { transform: translate(-5%,-5%); } 20% { transform: translate(-10%,5%); } 30% { transform: translate(5%,-10%); }
+    40% { transform: translate(-5%,12%); } 50% { transform: translate(-10%,5%); } 60% { transform: translate(12%,0); } 70% { transform: translate(0,8%); }
+    80% { transform: translate(-12%,0); } 90% { transform: translate(8%,4%); } 100% { transform: translate(4%,0); } }
+  .fx-leaks { position: fixed; inset: 0; z-index: 9995; pointer-events: none; mix-blend-mode: screen; filter: blur(18px);
+    background: radial-gradient(42% 30% at 14% 8%, rgba(123,47,190,0.16), transparent 70%), radial-gradient(36% 26% at 88% 92%, rgba(194,41,154,0.14), transparent 70%);
+    animation: fxLeaks 20s ease-in-out infinite alternate; }
+  @keyframes fxLeaks { 0% { transform: translate(0,0) scale(1); opacity: .65; } 50% { transform: translate(2%,-2%) scale(1.08); opacity: 1; } 100% { transform: translate(-2%,2%) scale(1); opacity: .8; } }
+  .page-wipe { position: fixed; inset: 0; z-index: 99999; pointer-events: none; background: linear-gradient(135deg, var(--vd), var(--v)); transform: translateY(100%); will-change: transform; }
+  @media (prefers-reduced-motion: reduce) { .fx-grain, .fx-leaks { animation: none; } }
+
   /* ── LOGO BREATHING GLOW ── */
   .logo-text h1 { text-shadow: 0 0 10px rgba(194,41,154,0.22); }
   .logo-mark::after { animation: logoBreathe 4.5s ease-in-out infinite; }
@@ -374,6 +389,10 @@
 </style>
 </head>
 <body>
+
+<div class="fx-leaks" aria-hidden="true"></div>
+<div class="fx-grain" aria-hidden="true"></div>
+<div class="page-wipe" id="pageWipe" aria-hidden="true"></div>
 
 <div id="splash">
   <div class="splash-glow"></div>
@@ -1180,6 +1199,29 @@ setTimeout(() => {
   s.classList.add('hide');
   setTimeout(() => s.remove(), 700);
 }, 2400);
+
+// neon page-transition wipe (exit on internal links; splash owns the intro here)
+(function () {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wipe = document.getElementById('pageWipe');
+  if (!wipe) return;
+  const isInternal = href => /(^|\/)(catalogue|index)\.html(#.*)?$/.test(href || '');
+  document.querySelectorAll('a[href]').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!isInternal(href)) return;
+    a.addEventListener('click', e => {
+      if (reduce || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+      e.preventDefault();
+      wipe.style.transition = 'none';
+      wipe.style.transform = 'translateY(100%)';
+      requestAnimationFrame(() => {
+        wipe.style.transition = 'transform .5s cubic-bezier(.7,0,.3,1)';
+        wipe.style.transform = 'translateY(0)';
+      });
+      setTimeout(() => { window.location.href = href; }, 510);
+    });
+  });
+})();
 </script>
 </body>
 </html>
