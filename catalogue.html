@@ -262,6 +262,51 @@
   .promo-badge { position: absolute; top: 12px; left: 12px; z-index: 3; font-family: var(--font-m); font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #fff; padding: 5px 11px; border-radius: 20px; background: linear-gradient(135deg, var(--vd), var(--v)); box-shadow: 0 0 14px rgba(194,41,154,.5); }
   .promo-card .pack-btn { align-self: flex-start; }
 
+  /* ── PRODUCT DETAIL PAGE ── */
+  .prod-overlay { position: fixed; inset: 0; z-index: 1100; background: rgba(0,0,0,.72); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .prod-overlay.show { opacity: 1; pointer-events: all; }
+  .prod-modal {
+    position: fixed; left: 50%; top: 50%; z-index: 1101;
+    width: min(900px, calc(100vw - 36px)); max-height: 88vh;
+    background: var(--bg3); border: 1px solid var(--border2); border-radius: 18px; overflow: hidden;
+    display: grid; grid-template-columns: 1.05fr 1fr;
+    transform: translate(-50%, -50%) scale(.93); opacity: 0; pointer-events: none;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(194,41,154,.12);
+    transition: transform .34s cubic-bezier(.34,1.3,.64,1), opacity .26s;
+  }
+  .prod-modal.show { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all; }
+
+  .prod-close { position: absolute; top: 12px; right: 12px; z-index: 4; width: 34px; height: 34px; border-radius: 50%; background: rgba(10,7,16,.6); border: 1px solid var(--border2); color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color .15s, background .15s; }
+  .prod-close:hover { color: var(--v); background: var(--vglow); }
+
+  .prod-media { position: relative; background: radial-gradient(circle at 50% 40%, var(--bg4), var(--bg2)); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: zoom-in; min-height: 320px; }
+  .prod-media img { width: 100%; height: 100%; object-fit: contain; padding: 30px; animation: kenburns 13s ease-in-out infinite alternate; }
+  @keyframes kenburns { 0% { transform: scale(1) translateY(0); } 100% { transform: scale(1.09) translateY(-6px); } }
+  .prod-media::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 120%, rgba(194,41,154,.18), transparent 60%); pointer-events: none; }
+  .prod-shine { position: absolute; top: 0; left: 0; width: 60%; height: 100%; pointer-events: none;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.12) 50%, transparent 70%);
+    transform: translateX(-160%) skewX(-12deg); animation: prodShine 5.5s ease-in-out infinite; }
+  @keyframes prodShine { 0%, 60% { transform: translateX(-160%) skewX(-12deg); } 100% { transform: translateX(260%) skewX(-12deg); } }
+  .prod-media-badge { position: absolute; top: 14px; left: 14px; z-index: 3; font-family: var(--font-m); font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #fff; padding: 5px 11px; border-radius: 20px; background: linear-gradient(135deg, var(--vd), var(--v)); box-shadow: 0 0 14px rgba(194,41,154,.5); }
+
+  .prod-info { padding: 30px 30px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+  .prod-cat { font-family: var(--font-m); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--vd); }
+  .prod-name { font-family: var(--font-d); font-size: 40px; letter-spacing: 1.5px; color: var(--text); line-height: .98; }
+  .prod-prices { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .prod-old { font-family: var(--font-m); font-size: 14px; color: var(--text3); text-decoration: line-through; }
+  .prod-now { font-family: var(--font-d); font-size: 40px; letter-spacing: .5px; color: var(--v); line-height: 1; }
+  .prod-off { font-family: var(--font-m); font-size: 11px; font-weight: 700; color: #fff; padding: 4px 9px; border-radius: 20px; background: linear-gradient(135deg, var(--vd), var(--v)); }
+  .prod-desc { color: var(--text2); font-size: 14px; line-height: 1.7; }
+  .prod-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .prod-spec { background: var(--bg4); padding: 11px 14px; display: flex; flex-direction: column; gap: 3px; }
+  .prod-spec-k { font-family: var(--font-m); font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); }
+  .prod-spec-v { font-size: 12.5px; color: var(--text); font-weight: 600; }
+  .prod-actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .prod-qty { display: flex; align-items: center; gap: 8px; background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 5px 8px; }
+  .prod-add { flex: 1; font-family: var(--font-m); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: #fff; border: none; cursor: pointer; padding: 14px 18px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--vd), var(--v)); box-shadow: 0 0 18px rgba(194,41,154,.35); transition: transform .15s, box-shadow .15s; }
+  .prod-add:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(194,41,154,.6); }
+  @media (prefers-reduced-motion: reduce) { .prod-media img, .prod-shine { animation: none; } }
+
   /* ── LOGO BREATHING GLOW ── */
   .logo-text h1 { text-shadow: 0 0 10px rgba(194,41,154,0.22); }
   .logo-mark::after { animation: logoBreathe 4.5s ease-in-out infinite; }
@@ -298,6 +343,13 @@
     .cart-fab { bottom: 18px; right: 18px; width: 52px; height: 52px; }
     .toast { right: 14px; bottom: 84px; left: 14px; max-width: none; }
     .cart-panel { max-height: 85vh; }
+    .prod-modal { grid-template-columns: 1fr; width: calc(100vw - 24px); max-height: 90vh; }
+    .prod-media { min-height: 200px; max-height: 38vh; }
+    .prod-media img { padding: 20px; }
+    .prod-info { padding: 20px 18px 22px; gap: 12px; }
+    .prod-name { font-size: 30px; }
+    .prod-now { font-size: 32px; }
+    .prod-specs { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 380px) {
@@ -407,6 +459,10 @@
   <div class="lightbox-close" onclick="closeLightbox()">✕</div>
   <img id="lightboxImg" src="" alt="">
 </div>
+
+<!-- PRODUCT DETAIL -->
+<div class="prod-overlay" id="prodOverlay" onclick="closeProduct()"></div>
+<div class="prod-modal" id="prodModal" role="dialog" aria-modal="true"></div>
 
 <script>
 const RAW = [
@@ -717,7 +773,74 @@ function openLightbox(src, e) {
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('show');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); closeProduct(); } });
+// ──────────────────────────────────────────────────────────────────
+
+// ── PRODUCT DETAIL PAGE ─────────────────────────────────────────────
+let prodQty = 1;
+
+function openProduct(name) {
+  const p = DATA.find(x => x.name === name);
+  if (!p) return;
+  prodQty = 1;
+  const sn = p.name.replace(/'/g,"\\'");
+  const si = (p.img || '').replace(/'/g,"\\'");
+  const tl = ITEM_TAGLINE[p.name] || 'Article disponible chez LTD Grove Street, servi sous les néons.';
+  const stL = p.status==='Epuise'?'Épuisé':p.status==='En stock'?'En stock':p.status==='Nouvel achat'?'Nouveau':'Disponible';
+  const promo = (PROMO.deals || []).find(d => d.name === p.name);
+  const priceNow = promo ? promo.now : p.sell;
+
+  const priceBlock = promo
+    ? `<span class="prod-old">${fmt(promo.old)}</span><span class="prod-now">${fmt(promo.now)}</span><span class="prod-off">-${promoPct(promo)}%</span>`
+    : `<span class="prod-now">${fmt(p.sell)}</span>`;
+
+  document.getElementById('prodModal').innerHTML = `
+    <button class="prod-close" onclick="closeProduct()" aria-label="Fermer">✕</button>
+    <div class="prod-media" onclick="${p.img ? `openLightbox('${si}',event)` : ''}">
+      ${p.img
+        ? `<img src="${p.img}" alt="${p.name}"><span class="prod-shine"></span>`
+        : `<div class="no-photo"><span>Photo à venir</span></div>`}
+      ${promo ? `<span class="prod-media-badge">Promo −${promoPct(promo)}%</span>` : ''}
+    </div>
+    <div class="prod-info">
+      <div class="prod-cat">${CAT_ICONS[p.cat]||''} ${p.cat}</div>
+      <h2 class="prod-name">${p.name}</h2>
+      <div class="prod-prices">${priceBlock}</div>
+      <p class="prod-desc">${tl}</p>
+      <div class="prod-specs">
+        <div class="prod-spec"><span class="prod-spec-k">Disponibilité</span><span class="prod-spec-v">${stL}</span></div>
+        <div class="prod-spec"><span class="prod-spec-k">Fournisseur</span><span class="prod-spec-v">${p.src||'—'}</span></div>
+        <div class="prod-spec"><span class="prod-spec-k">Catégorie</span><span class="prod-spec-v">${p.cat}</span></div>
+        <div class="prod-spec"><span class="prod-spec-k">Référence</span><span class="prod-spec-v">GS-${p.name.slice(0,3).toUpperCase()}-${String(Math.abs([...p.name].reduce((a,c)=>a+c.charCodeAt(0),0))).slice(-3)}</span></div>
+      </div>
+      <div class="prod-actions">
+        <div class="prod-qty">
+          <button class="qty-btn" onclick="prodChangeQty(-1)">−</button>
+          <span class="qty-num" id="prodQtyNum">1</span>
+          <button class="qty-btn" onclick="prodChangeQty(1)">+</button>
+        </div>
+        <button class="prod-add" onclick="prodAdd('${sn}',${priceNow},'${si}',this)">Ajouter au panier</button>
+      </div>
+    </div>`;
+
+  document.getElementById('prodOverlay').classList.add('show');
+  document.getElementById('prodModal').classList.add('show');
+}
+
+function prodChangeQty(d) {
+  prodQty = Math.max(1, prodQty + d);
+  const el = document.getElementById('prodQtyNum');
+  if (el) el.textContent = prodQty;
+}
+
+function prodAdd(name, price, img, btn) {
+  for (let i = 0; i < prodQty; i++) addToCart(name, price, img, i === 0 ? btn : null);
+}
+
+function closeProduct() {
+  document.getElementById('prodOverlay').classList.remove('show');
+  document.getElementById('prodModal').classList.remove('show');
+}
 // ──────────────────────────────────────────────────────────────────
 
 // ── CART ───────────────────────────────────────────────────────────
@@ -938,9 +1061,9 @@ function render() {
       const sn = p.name.replace(/'/g,"\\'");
       const si = (p.img||'').replace(/'/g,"\\'");
       const tl = ITEM_TAGLINE[p.name] || '';
-      return `<div class="card" onclick="addToCart('${sn}',${p.sell||0},'${si}',this)">
+      return `<div class="card" onclick="openProduct('${sn}')">
         <div class="card-img">
-          ${p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy" onclick="openLightbox('${si}',event)" style="cursor:zoom-in;">` : `<div class="no-photo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Photo</span></div>`}
+          ${p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy">` : `<div class="no-photo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>Photo</span></div>`}
         </div>
         <div class="card-top"><div class="card-name">${p.name}</div></div>
         ${tl ? `<div class="card-tagline">${tl}</div>` : ''}
