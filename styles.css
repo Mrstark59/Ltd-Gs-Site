@@ -640,8 +640,57 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
+/* =================== CINEMATIC FX =================== */
+
+/* film grain */
+.fx-grain {
+  position: fixed; inset: -50%; width: 200%; height: 200%;
+  z-index: 9996; pointer-events: none; opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: fxGrain .8s steps(1) infinite;
+}
+@keyframes fxGrain {
+  0% { transform: translate(0,0); }      10% { transform: translate(-5%,-5%); }
+  20% { transform: translate(-10%,5%); } 30% { transform: translate(5%,-10%); }
+  40% { transform: translate(-5%,12%); } 50% { transform: translate(-10%,5%); }
+  60% { transform: translate(12%,0); }   70% { transform: translate(0,8%); }
+  80% { transform: translate(-12%,0); }  90% { transform: translate(8%,4%); }
+  100% { transform: translate(4%,0); }
+}
+
+/* drifting neon light leaks */
+.fx-leaks {
+  position: fixed; inset: 0; z-index: 9995; pointer-events: none;
+  mix-blend-mode: screen; filter: blur(18px);
+  background:
+    radial-gradient(42% 30% at 14% 8%, rgba(123,47,190,0.16), transparent 70%),
+    radial-gradient(36% 26% at 88% 92%, rgba(194,41,154,0.14), transparent 70%);
+  animation: fxLeaks 20s ease-in-out infinite alternate;
+}
+@keyframes fxLeaks {
+  0%   { transform: translate(0,0) scale(1);     opacity: .65; }
+  50%  { transform: translate(2%,-2%) scale(1.08); opacity: 1; }
+  100% { transform: translate(-2%,2%) scale(1);  opacity: .8; }
+}
+
+/* neon page-transition wipe */
+.page-wipe {
+  position: fixed; inset: 0; z-index: 99999; pointer-events: none;
+  background: linear-gradient(135deg, var(--violet), var(--magenta));
+  transform: translateY(100%); will-change: transform;
+}
+
+/* hero title mask reveal */
+.reveal-line { display: block; overflow: hidden; padding-bottom: .02em; }
+.reveal-inner { display: block; transform: translateY(110%); animation: lineReveal .95s cubic-bezier(.2,.85,.25,1) both; }
+.reveal-line:nth-child(2) .reveal-inner { animation-delay: .12s; }
+@keyframes lineReveal { to { transform: translateY(0); } }
+
 /* respect reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  .hero__pulse, .nav__mark { animation: none; }
+  .hero__pulse, .nav__mark, .fx-grain, .fx-leaks { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .reveal-inner { transform: none; animation: none; }
+  .fx-leaks { opacity: .5; }
 }
